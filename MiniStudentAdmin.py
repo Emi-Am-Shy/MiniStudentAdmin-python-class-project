@@ -1,6 +1,11 @@
 """Hai Shiya! I'm like super sleepy yet so energized right now but I wanted 
-to say I love you platonically and I appreciate you as my lab partner :3 IM SORRY :( YOURE BULLYI
+to say I love you platonically and I appreciate you as my lab partner :3 IM SORRY :( YOURE BULLYING ME
 """
+import pandas as pd
+
+# Load the catalog for credit lookups
+df_catalog = pd.read_csv('course_catelog(in).cvs')
+CREDIT_LOOKUP = dict(zip(df_catalog['course_code'], df_catalog['credits']))
 
 """
 Task 1: Implement the Course Class
@@ -25,31 +30,21 @@ an object of Student class.
 class Course: 
     """This Class represents a single course""" # Holds and maintains its own roster
     
-    def __init__(self, course_code:str, credits:int, students = None):
+    def __init__(self, course_code: str, credits: int): #Students Removeed
         """Initializes a Course Roster with course_code, credits, and students"""
-        self.course_code = course_code          # Identifyer: (string) The course CSE2050
-        # If cour_code not in CVS file raise ValueError: course DNE TODO!
-        self.credits = credits                  # Identifyer: (integer) Number of credits earned for a completed course
-        # If course_code doesn't match with the courses credits raise ValueError: 
-        # Credit count inncorrect, did you mean? "Display credit count associated with course" TODO!
-        self.students = students                # Identifyer: (list of Student objects) All students enrolled in a course
-        # Idk how to check this yet TODO!
-        self.studentCount = 0                   # Count: Amount of students in class
-        
-        #Make things to confirm values inserted
-
-        if self.students == None:
-            self.students = list([])  
-        else:
-            self.students = students # If a dictionary is already made, prove it is TODO!
+        self.course_code = course_code          
+        self.credits = credits                  
+        self.students = []  # Initialize as an empty regular list
+        self.studentCount = 0
     
-    def add_students(self, new_student):                # Purpose: Adds a Student(object) to the course roster
-        self.students.update(new_student)
-        self.studentCount += 1             # Purpose: Increases student count to a Course's roster
-                                           # Test if student object being added is real, and how 
-        return None
+    def add_students(self, new_student):
+        # Prevent adding the same student twice
+        if new_student not in self.students:
+            self.students.append(new_student)
+            self.studentCount += 1
 
-    def get_student_count(self):           # Purpose: Returns number of student currently enrolled
+    def get_student_count(self):
+        """Returns number of students currently enrolled"""
         return self.studentCount
 
 
@@ -91,65 +86,60 @@ Pcredits
 #Task 2 Begins Here
 
 class Student:
-    """Student represents an individual student and the SET of courses they have taken (with grades)"""
-    
     GRADE_POINTS = {
-    'A' : 4.0, 'A-' : 3.7,
-    'B+': 3.3, 'B' : 3.0, 'B-' : 2.7,
-    'C+': 2.3, 'C' : 2.0, 'C-' : 1.7,
-    'D' : 1.0,
-    'F' : 0.0
+        'A' : 4.0, 'A-' : 3.7, 'B+': 3.3, 'B' : 3.0, 'B-' : 2.7,
+        'C+': 2.3, 'C' : 2.0, 'C-' : 1.7, 'D' : 1.0, 'F' : 0.0
     }
 
-    def __init__(self, student_id:str, name:str, courses:None):
-        self.student_id = student_id    # (string) - unique identifier for the student. STUDENT ID IN CVS
-        # IF STUDENT ID NOT IN CVS FILE: raise ValueError(StudentID DNE) TODO!
-        self.name = name                # (String) - The student’s name.
-        # IF STUDENT NAME NOT IN CVS FILE: raise ValueError(StudentID DNE) TODO!
-        self.courses_takendict = courses        # (Dict) - of the courses a student has taken, with grade
-        
-        if self.courses_takendict == None:         # Sets the default parameter if Course input dict is empty
-            course = {}
-        elif self.courses_takendict == { }:
-            course = {}
+    def __init__(self, student_id: str, name: str):
+        self.student_id = student_id
+        self.name = name
+        self.courses_takendict = {} # Course Object : Letter Grade
 
     def enroll(self, new_course, grade): 
-        """enrolls the student in a course with the given grade and updates the course roster."""
+        """Enrolls student in course and updates the course's own roster."""
         self.courses_takendict[new_course] = grade
-        # If course is not in CVS file: raise ValueError("Course DNE, please try again") TODO!, then call the function again
-        # If grade not in GRADE_POINTS: raise ValueError("Grade DND, please try again") TODO!, then call the function again?
+        # IMPORTANT: This tells the Course object to add this Student to its list!
+        new_course.add_students(self)
 
+    def upgrade_grade(self, course_obj, grade: str):
+        if course_obj not in self.courses_takendict:
+            raise RuntimeError("Student has not taken this course.")
+        if grade not in self.GRADE_POINTS:
+            raise ValueError("Letter grade DNE.")
+        self.courses_takendict[course_obj] = grade
+
+    def calc_gpa(self):
+        total_quality_points = 0.0
+        total_credits = 0
         
-
-    def upgrade_grade(self, courseselect:str, grade:str):
-        """modify the student grade for a particular course
-            self: links method to class object
+        # We iterate through the dictionary: the key is a Course Object
+        for course_obj, letter_grade in self.courses_takendict.items():
+            # 1. Get points from our class dictionary
+            points = self.GRADE_POINTS.get(letter_grade, 0.0)
             
-            courseselect: takes grade as a str
+            # 2. Get credits directly from the Course object
+            credits = course_obj.credits
+            
+            total_quality_points += (points * credits)
+            total_credits += credits
 
-            grade: takes in grade as str
-        """
+        if total_credits == 0:
+            return 0.0
+            
+        return round(total_quality_points / total_credits, 2)
 
-        if courseselect not in self.courses_takendict().values():
-            raise RuntimeError("Student has not taken this course(There is no grade to update)") #Then call function again TODO!
-        else: 
-            if grade not in self.GRADE_POINTS.keys():
-                raise ValueError("Letter grade DNE, please try again")
-            self.courses_takendict[courseselect] = grade
+    def get_courses(self):
+        # Returns the Course objects (the keys of our dictionary)
+        return list(self.courses_takendict.keys())
 
-    def calc_gpa(self): # Calculates GPA
-        """computes and returns the GPA using all graded courses and their credits."""
-        #Multiply grade points with credits
-        pass
-
-    def get_courses(self): #Returns a list of course objects
-        """returns a list of course objects taken by the student"""
-        pass
-
-    def get_course_info(self): #returns a structured summary of all enrollments, including course code, grade, and credits
-        """returns the number of students currently enrolled"""
-        pass
-
+    def get_course_info(self):
+        """Returns a summary of all enrollments."""
+        summary = []
+        for course_obj, grade in self.courses_takendict.items():
+            info = f"{course_obj.course_code}: {grade} ({course_obj.credits} credits)"
+            summary.append(info)
+        return "\n".join(summary)
 """
 Task 3: Implement the University Class
 
@@ -180,11 +170,12 @@ repeatedly scanning lists to find a student or course.
 class University:
     
     def __init__(self): #dictionaries in University are meant to lookup fast and simple
-        self.students = {}
-        self.courses = {}
+        self.students = {} # Maps student_id (str) -> Student Object
+        self.courses = {} # Maps course_code (str) -> Course Object
     
     def add_course(self, course_code, credits): #if the student does not exist, create and store them; return the student object.
         if course_code not in self.courses:
+            # Create a new Course object and store it
             self.courses[course_code] = Course(course_code, credits)
             
         return self.courses[course_code]
