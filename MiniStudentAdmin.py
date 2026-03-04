@@ -24,23 +24,48 @@ an object of Student class.
 
 #Task 1 Begins Here
 import csv
+"""
+CSV Is a required portion of this progam. 
+CSV is a built in python Module which is designed to (efficiently) read csv files.
+"""
 import statistics
+"""
+Import statistic is a built in python Module with predefined methods that help ppreform methematical operations.
+For example: 
+            Instead of having to write average = sum(my_list) / len(my_list), 
+            all I need to do is call statistics.mean(data)
+
+Furhtermore, this class has better reliability when dealing with floating point number
+"Just like the ones a grading system would have"
+"""
 
 class Course:
-    """Designed by: [Partner Name]"""
+    """This class creates objects that represents a single course in the university catalog (e.g., CSE2050) """
+    
+    """Designed by: Juan M. Velazquez, and Shiya [Last name here]""" #TODO!
     def __init__(self, course_code, credits):
-        self.course_code = course_code
-        self.credits = int(credits)
-        self.students = []
+        """This method initializes the Course Class's attributes, linking them to the object created by this class"""
+        self.course_code = course_code # Instance Attributes Class: (string) - Unique identifier that defines the course (e.g., "CSE1010") 
+        self.credits = int(credits)    # Instance Attributes Class: (integer) - Defines number of credits earned for completing the course
+        self.students = []             # Instance Attributes Class: list("Of all student OBJECTS") - all students enrolled in the course
 
-    def add_student(self, student_obj):
+    def add_student(self, student_obj): 
         """Task 1: adds a Student object to the course roster."""
-        if student_obj not in self.students:
-            self.students.append(student_obj)
+        if student_obj not in self.students: #This line is a secruity meassure
+            """Case Prevention: Duplicates - it prevents duplicates by referencing the (student_object) 
+                                             we're inserting(enrolling) with the function
+                                             with student object already created (self.student)
+                                             
+                                             This line makes the program go into the memory of Student objects(self.student(s)) created
+                                             and returns "True" if the "student_object" we're inserting is not in "self.student(s)"
+                                                - This only adds the "student_object" to the list of Student Objects(self.student(s))
+                                                  enrolled into the Course, if the object does not already exist
+                                             """
+            self.students.append(student_obj) # Enrolls student_object into the list of students enrolled 
 
-    def get_student_count(self):
+    def get_student_count(self): 
         """Task 1: returns the number of students currently enrolled."""
-        return len(self.students)
+        return len(self.students) # Uses the list method len() which returns the count of students enrolled
 
 
 """
@@ -81,33 +106,69 @@ Pcredits
 #Task 2 Begins Here
 
 class Student:
-    """Designed by: [Your Name]"""
-    GRADE_POINTS = {
+    """Student class represents an individual student and the set of courses they have taken (with grades). Required Fields"""
+    
+    """Designed by: Juan A Morquecho, and Shiya [Last Name]""" #TODO!
+    
+    #This dictionary defines all letter grades(Represented by strings) as keys, 
+    #with associated float point values(4.0, 4.1 etc) of grades 
+    GRADE_POINTS = {                            
         'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
         'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D': 1.0, 'F': 0.0
     }
 
     def __init__(self, student_id, name):
-        # Validation: 8 chars and starts with STU
-        if len(student_id) != 8 or not student_id.startswith("STU"):
-            raise ValueError(f"Invalid ID: {student_id}")
-        if not name.strip():
-            raise ValueError("Name cannot be empty")
+        """
+        This method inizializes the class attributes. 
+        Student ID - Is an indetifyer for this specific "Student" 
+        Name - Associates a particular name with the student's ID
+        """
         
-        self.student_id = student_id
-        self.name = name
-        self.courses = {} # {CourseObj: grade_string}
+        """Student ID is always 8 characters long, and starts with STU. 
+           
+           With this information we can use it to create a case prevention meassure 
+           for when someone is creating a student object.  
+
+           Case Prevention: Value errors - Invalid IDs, or Name
+          
+          """
+        # Condition 1: If len of student_ID is not equal to 8 return True:  Run command
+        # Condition 2: If student_id does not start with "STU" return True: Run Command
+        #Condition 3: If name is only spaces return True
+
+        # When both these conditions are true, the ID is allowed passed the first secruity check.
+        if len(student_id) != 8 or not student_id.startswith("STU"): #Check is length of the string is 8 char long, 
+                                                                     #The "or" opperator allows to have two, or more conditional statments be put on a single line
+
+            raise ValueError(f"Invalid ID: {student_id}, does not start with STU, or is 8 characters long") #Intentional Crash
+        
+        # Checks if name is not just a space
+        if not name.strip():  #.strip("character removed") is a built in python method for string             
+                                                                        #this is needed since without it an our past secruiity check doesn't protect the pogram from it
+            raise ValueError("Name cannot be empty") #Inentional Crash
+        
+        self.student_id = student_id # Instance Attributes Class: (string) - Unique identifier that defines the student's ID (e.g., "STU00001") 
+        self.name = name             # Instance Attributes Class: (string) - Unique identifier that defines the student's name (e.g., "Student_1")
+        self.courses = {}            # Instance Attrivute  Class: (Dictionary) - Courses student has taken(key), with the
+                                                                               # grade that student earned for the course(val). 
+                                                                               # self.courses = {CourseObj: grade_string}, default {}
 
     def enroll(self, course_obj, grade):
         """Task 2: enrolls the student and updates course roster."""
-        if grade not in self.GRADE_POINTS:
+        """Since grade points  both as points and letters are already defined,
+           we can just check to see if they're in the dictionary(GRADE_POINTS)"""
+        
+        if grade not in self.GRADE_POINTS: #Secruity check: Returns True if the input(grade), is not in dictionary, "self.GRADE_POINTS".
             raise ValueError(f"Invalid grade: {grade}")
-        self.courses[course_obj] = grade
-        course_obj.add_student(self)
+        
+        self.courses[course_obj] = grade #Once the tests are passed the course list of student's classes taken(Which is actually a dictionary), gets updated
+        course_obj.add_student(self) 
 
     def update_grade(self, course_obj, grade):
         """Task 2: modify the student grade for a particular course."""
-        if course_obj in self.courses:
+        if course_obj in self.courses: # "Has-a" relationship: This method is calling the student object
+                                       # This function is recieving a object made from the Course class 
+                                       # course_obj = Course(self, course_code, credits)
             self.courses[course_obj] = grade
 
     def calculate_gpa(self):
