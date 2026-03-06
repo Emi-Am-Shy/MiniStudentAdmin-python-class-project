@@ -216,7 +216,7 @@ repeatedly scanning lists to find a student or course.
 #Task 3 Begins 
 
 class University:
-    """It stores all students and courses and provides method to query enrollment information efficiently."""
+    """It stores all students and courses and provides methodto query enrollment information efficiently."""
     """Designed by: Alex Morquecho Velazquez, Shiya Subbaiah"""
     def __init__(self): #O(1)- Shiya
         """Initializes a University object with empty dictionaries to store students (by ID) and courses (by course code) """ 

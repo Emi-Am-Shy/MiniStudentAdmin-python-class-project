@@ -1,4 +1,4 @@
-import unittest
+import unittest 
 from MiniStudentAdmin import Student, Course, University
 
 class Test_MiniStudentAdmin(unittest.TestCase):
@@ -8,7 +8,7 @@ class Test_MiniStudentAdmin(unittest.TestCase):
         self.uni = University()
         self.c1 = Course("CSE1010", 3)
         self.s1 = Student("STU00001", "Alice")
-
+    
     # Course Tests
     def test_course_roster(self):
         """Verifies that students are correctly added to the roster and that duplicate entries are blocked."""
