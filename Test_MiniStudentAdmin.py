@@ -1,5 +1,5 @@
 import unittest 
-from MiniStudentAdmin import Student, Course, University
+from Archives.MiniStudentAdmin1 import Student, Course, University
 
 class Test_MiniStudentAdmin(unittest.TestCase):
 
