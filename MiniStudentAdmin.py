@@ -5,12 +5,14 @@ from datetime import date
 # Task 2: LinkedQueue ADT (Waitlist)
 # ==========================================
 class Node:
+    """This is the initiation of a wrapper for the data"""
     def __init__(self, data):
         self.data = data
         self.next = None
 
 class LinkedQueue:
     """FIFO Queue implemented using a Linked List (No Python lists allowed)"""
+    #Contains the logic by which the nodes are implemented into a list
     def __init__(self):
         self._head = None
         self._tail = None
@@ -69,9 +71,9 @@ def recursive_binary_search(arr, target_id, left, right):
     else:
         return recursive_binary_search(arr, target_id, mid + 1, right)
 
-# ==========================================
+
 # Core Management Classes
-# ==========================================
+
 class EnrollmentRecord:
     """Wraps a student object with a timestamp for registration tracking."""
     def __init__(self, student, enroll_date=None):
@@ -132,9 +134,8 @@ class Student:
             self.courses[course_obj] = grade
         return status
 
-# ==========================================
+
 # Task 3: Data Loading & Main Execution
-# ==========================================
 class University:
     """High-level manager to coordinate students and courses."""
     def __init__(self):

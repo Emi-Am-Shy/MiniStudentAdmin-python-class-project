@@ -17,3 +17,16 @@ Computational Efficiency |
 How to RunPrepare Data: Ensure course_catalog(in).csv and university_data(in).csv are in the project folder.Execution: Run python MiniStudentAdmin.py to load the data.Testing: Run python Test_MiniStudentAdmin.py to execute the unit tests and verify the logic.
 
 Lab Partner Note "Hai Shiya! I'm like super sleepy yet so energized right now but I wanted to say I love you platonically and I appreciate you as my lab partner :3 You're a goated lab partner! :DD"
+
+Milestone 2 Task Implementation Explanations:
+
+1. The LinkedQueue (The Waitlist)
+This implements a FIFO (First-In, First-Out) queue using a Linked List. 
+ - This is more efficient than a Python list for queues because dequeue is O(1) instead of O(n).
+
+ - class Node: The building block. 
+    . Each node holds data (a student record) and a next pointer to the person behind them.
+    
+    . enqueue(item):Creates a Node.(If the queue is empty, both head and tail point to it.)
+    
+    . Otherwise, it sticks the new node after the current _tail and moves the tail pointer to the new end.dequeue():Saves the data from _head.Moves _head one step forward (self._head = self._head.next).If the last person was removed, it sets _tail to None.
