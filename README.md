@@ -62,7 +62,7 @@ This implements a FIFO (First-In, First-Out) queue using a Linked List.
 ### Sorting the Roster
 The system supports sorting the `enrolled_roster` of `EnrollmentRecord` objects by **Student Name**, **Student ID**, or **Enrollment Date**. 
 
-* **Algorithms Implemented:** Selection Sort and Insertion Sort ($O(n^2)$).
+* **Algorithms Implemented:** Selection Sort and Insertion Sort (O(n^2)).
 * **State Tracking:** The `Course` object tracks which attribute it is currently sorted by to determine if efficient searching is possible.
 
 ### Recursive Binary Search
@@ -76,14 +76,35 @@ When a student needs to be dropped from a course that is already sorted by Stude
 
 | Task | Data Structure | Complexity |
 | :--- | :--- | :--- |
-| **Waitlist** | Linked List (Queue ADT) | $O(1)$ Enqueue/Dequeue |
-| **Search (by ID)** | Recursive Binary Search | $O(\log n)$ |
-| **Sorting** | Selection & Insertion Sort | $O(n^2)$ |
+| **Waitlist** | Linked List (Queue ADT) | O(1) Enqueue/Dequeue |
+| **Search (by ID)** | Recursive Binary Search | O(\log n) |
+| **Sorting** | Selection & Insertion Sort | O(n^2) |
 | **Student Record** | EnrollmentRecord Wrapper | N/A |
 
 ## Usage
 To initialize the system and load data, ensure your CSV files are in the root directory and use the `University` class:
 
-```python
-u = University()
-u.load_from_csv('course_catalog_CSE10_with_capacity.csv')
+======================
+Shiya's Read me Below
+======================
+
+## Testing & Validation (Work by Shiya Subbaiah)
+
+Shiya was responsible for the Quality Assurance (QA) and demonstration phase of Milestone 2. This involved verifying that the core logic handled edge cases correctly and creating a workflow for the TA check-off.
+
+### 1. Unit Test Suite (`MiniStudentAdminTestCasses.py`)
+This file uses the `unittest` framework to validate the system.
+* **Queue Verification**: Confirms the `LinkedQueue` maintains strict FIFO (First-In-First-Out) order and properly raises `ValueError` on empty dequeues.
+* **Waitlist Logic**: Checks that students are correctly put into to the waitlist once `capacity` is reached and that `add_student` returns the correct status strings.
+* **Algorithm Accuracy**: 
+    * Tests that **Selection Sort** and **Insertion Sort** result in correctly ordered lists based on different keys (ID, Name).
+    * Validates that the **Recursive Binary Search** correctly identifies the target index in O(\log n) time.
+* **State Management**: Ensures that dropping a student correctly triggers the promotion of the next student from the waitlist.
+
+### 2. Live Demonstration Script (`Milestone2Demo.py`)
+A comprehensive script designed for the lab check-off to demonstrate the full system workflow to the TA:
+* **Enrollment Flow**: Shows the system reaching capacity and handling overflow.
+* **Sorting Display**: Demonstrates the roster being organized by Student ID.
+* **Automated Promotion**: Provides a clear visual of a student moving from the waitlist to the enrolled roster immediately after a `drop_student` call.
+
+---
