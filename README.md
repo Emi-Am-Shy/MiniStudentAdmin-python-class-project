@@ -88,23 +88,44 @@ To initialize the system and load data, ensure your CSV files are in the root di
 Shiya's Read me Below
 ======================
 
-## Testing & Validation (Work by Shiya Subbaiah)
+Milestone 2 – Complexity Reflection
+CSE 2050 – Spring 2026
 
-Shiya was responsible for the Quality Assurance (QA) and demonstration phase of Milestone 2. This involved verifying that the core logic handled edge cases correctly and creating a workflow for the TA check-off.
+This milestone added several new data‑structure concepts on top of our Milestone 1 system.
+Below is a short summary of the time complexities for the structures and algorithms we implemented,
+along with a quick explanation of why they behave the way they do.
 
-### 1. Unit Test Suite (`MiniStudentAdminTestCasses.py`)
-This file uses the `unittest` framework to validate the system.
-* **Queue Verification**: Confirms the `LinkedQueue` maintains strict FIFO (First-In-First-Out) order and properly raises `ValueError` on empty dequeues.
-* **Waitlist Logic**: Checks that students are correctly put into to the waitlist once `capacity` is reached and that `add_student` returns the correct status strings.
-* **Algorithm Accuracy**: 
-    * Tests that **Selection Sort** and **Insertion Sort** result in correctly ordered lists based on different keys (ID, Name).
-    * Validates that the **Recursive Binary Search** correctly identifies the target index in O(\log n) time.
-* **State Management**: Ensures that dropping a student correctly triggers the promotion of the next student from the waitlist.
+1. LinkedQueue (enqueue and dequeue)
+Our LinkedQueue uses a simple singly linked list with both a head and a tail pointer. Because of that:
+• enqueue(item): O(1)
+  We always insert at the tail, and since we keep a direct pointer to it, no traversal is needed.
+• dequeue(): O(1)
+  We remove from the head, which is also just a pointer update.
 
-### 2. Live Demonstration Script (`Milestone2Demo.py`)
-A comprehensive script designed for the lab check-off to demonstrate the full system workflow to the TA:
-* **Enrollment Flow**: Shows the system reaching capacity and handling overflow.
-* **Sorting Display**: Demonstrates the roster being organized by Student ID.
-* **Automated Promotion**: Provides a clear visual of a student moving from the waitlist to the enrolled roster immediately after a `drop_student` call.
+This is one of the main benefits of using a linked list for a queue — both operations stay constant time.
 
----
+2. Sorting Algorithms
+We implemented Selection Sort and Insertion Sort.
+
+• Selection Sort: O(n^2)
+  It always scans the remaining unsorted portion of the list to find the minimum. Even if the list is
+  already sorted, it still does the same number of comparisons.
+
+• Insertion Sort: O(n^2) worst case, but O(n) best case
+  The worst case happens when the list is in reverse order and every element has to shift all the way
+  to the front. But if the list is already sorted (or close to it), Insertion Sort is much faster because
+  each element only moves a little.
+
+3. Recursive Binary Search
+• Time Complexity: O(log n)
+  Each recursive call cuts the search space in half, which is why binary search is so efficient.
+
+• Why sorting is required:
+  Binary search only works if the list is sorted. Without sorting, the comparison at the midpoint
+  doesn’t tell us which half of the list to discard, so the algorithm would not work correctly.
+
+4. Comparing the Sorting Algorithms
+Selection Sort is predictable but slow — it always does the same amount of work. Insertion Sort, on the
+other hand, can be much faster when the data is already partially sorted. In practice, Insertion Sort is
+usually the better choice for small or nearly sorted lists, while Selection Sort is mainly useful for its
+simplicity and consistency.
