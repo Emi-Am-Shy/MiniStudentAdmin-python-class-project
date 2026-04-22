@@ -12,7 +12,7 @@ Run this file during lab check-off to show the TA the full workflow.
 """
 
 # Import from logic file
-from MiniStudentAdmin import Course, Student
+from Archives.MiniStudentAdmin import Course, Student
 
 print("\n======================================")
 print("        Milestone 2 Demo Start")

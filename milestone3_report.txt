@@ -1,0 +1,51 @@
+#Half a page nonsense D:
+
+def _hash(self, key): #Avg: O(1), Best:O(1), Worst:O(n) (n is length of the key) -Shiya 
+The worst case is O(n)- to create a unique hash, the function has to read every single charactetr in the key and therefore scales linearly 
+the average and best case are constant because most keys are small and stay a consistent length
+
+
+ def put(self, key, value): # Avg:O(1), Best:O(1), Worst(n) -Shiya 
+The best and average cases are O(1) because the keys are spread evenly, so buckets are short and lookups are near-instant
+The worse case is O(n) because if all of the items hash to the same index, then the method must perform a linear search through all n items
+
+def get(self, key): #Avg:O(1), Best:O(1), Worst:O(n) -Shiya
+The best case and average are O(1) because the keys are distributed evenly across buckets
+The worst case is O(n) because all of the items collide at the same index (chaining)
+
+def _rehash(self): #Avg:O(n), Best:O(n), Worst:O(n) -Shiya
+All of the cases are O(n) because you have to visit and then move every one of the n items to a new location
+
+def merge_sort(arr, key_func): #Avg:O(nlogn), Best:O(nlogn), Worst:O(nlogn) -Shiya
+All of the cases are O(nlog(n)) because you always perform log n levels of splitting, with O(n) work per level to merge
+
+def enqueue(self, item): #Avg:O(1), Best:O(1), Worst:O(1) -Shiya
+All of the cases are O(1) because direct access through the _tail pointer allows for an immediate insertion regardless of the queue size (n)
+
+def dequeue(self): #Avg:O(1), Best:O(1), Worst:O(1) -SHiya
+All of the cases are O(1) because removing from the front of a linked list only involves a constant number of pointer updates, independent of the number of items (n)
+
+def is_empty(self): #Avg:O(1), Best:O(1), Worst:O(1) -Alex
+All of the cases are O(1) because accessing a stored variable and performing a basic comparison is a constant-time operation
+
+def __len__(self): #Avg:O(1), Best:O(1), Worst:O(1) -Alex
+All of the cases are O(1) because accessing a pre-calculated integer attribute is a constant-time operation
+
+def add_prerequisite(self, course_id, prereq_id): #Avg:O(1), Best:O(1), Worst:O(n) -Alex
+The best and average cases because of direct insertion into the Hash Table with minimal collisions
+
+def request_enroll(self, student_obj): #Avg:O(n) number of students enrolled in specific course, Best:O(1), Worst:O(n) -Alex
+The best case is O(1) becauseprerequisite check fails immediately, exiting before any loops run
+The averag and worst case is O(n) because must iterate through the entire enrolled_roster to check for duplicate IDs
+
+def sort_roster(self, by='id'): #Avg:O(nlogn), Best:O(nlogn), Worst:O(nlogn) -Alex
+All of the cases are O(nlog(n)) because merge sort consistently performs log n levels of division with O(n) merging work per level, regardless of input order
+
+def load_prerequisites(self, prereq_csv): #Avg:O(n), Best:O(n), Worst:O(n) -Alex
+All of the cases are O(n) because the function must visit every row in the CSV file once. Each row is processed in constant time.
+
+def load_university_data(self, courses_csv, enroll_csv): #Avg:O(n + m), Best:O(n + m * k), Worst:O(n^2 + m * k) -Alex
+                                                             #K is because of request enroll which contains a loop to check for duplicates
+
+O(n+m) for average and best because of linearrocessing of both files with efficient hash table lookups and prerequisite errors skip the expensive duplicate-check loops.
+O(n^2 + m*k) for worst because severe hash collisions ( n^2 ) combined with nested loops for duplicate checking (m.k)

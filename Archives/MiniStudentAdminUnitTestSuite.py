@@ -13,7 +13,7 @@ import unittest
 from datetime import date
 
 # Import everything from your logic file
-from MiniStudentAdmin import (
+from Archives.MiniStudentAdmin import (
     LinkedQueue, Course, Student, EnrollmentRecord, 
     recursive_binary_search
 )
